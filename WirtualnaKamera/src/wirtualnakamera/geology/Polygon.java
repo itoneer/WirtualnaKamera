@@ -17,7 +17,7 @@ public class Polygon {
     public Polygon(List<Point> vertices) {
         if (vertices.size() < 3) throw new IllegalArgumentException("Za mało punktów: " + vertices.size());
         
-        int value;
+        double value;
         char axis = vertices.get(0).compareDims(vertices.get(1), vertices.get(2));
         switch(axis) {
             case 'x':

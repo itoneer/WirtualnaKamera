@@ -5,17 +5,28 @@
  */
 package wirtualnakamera.camera;
 
+import java.awt.Color;
+import wirtualnakamera.geology.Map;
+
 /**
  *
  * @author itoneer
  */
 public class CameraPanel extends javax.swing.JPanel {
 
+    private static CameraPanel panel = null;
+    
     /**
      * Creates new form CameraPanel
      */
     public CameraPanel() {
         initComponents();
+        setBackground(Color.BLACK);
+    }
+    
+    public static CameraPanel getPanel() {
+        if (panel == null) panel = new CameraPanel();
+        return panel;
     }
 
     /**
@@ -38,6 +49,10 @@ public class CameraPanel extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    void redraw(Map map) {
+        
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
