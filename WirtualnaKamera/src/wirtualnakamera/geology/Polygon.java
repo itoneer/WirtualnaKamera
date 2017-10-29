@@ -5,6 +5,7 @@
  */
 package wirtualnakamera.geology;
 
+import java.awt.Graphics2D;
 import java.util.List;
 
 /**
@@ -36,7 +37,12 @@ public class Polygon {
         }
     }
     
+    public List<Point> getVertices() {
+        return vertices;
+    }
+    
     public boolean isDrawable(int focal) {
         return vertices.stream().noneMatch((p) -> (!p.isDrawable(focal)));
     }
+    
 }

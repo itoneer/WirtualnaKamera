@@ -6,7 +6,13 @@
 package wirtualnakamera.camera;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 import wirtualnakamera.geology.Map;
+import wirtualnakamera.geology.Point;
+import wirtualnakamera.geology.Polygon;
 
 /**
  *
@@ -16,10 +22,13 @@ public class CameraPanel extends javax.swing.JPanel {
 
     private static CameraPanel panel = null;
     
+    private List<Pixel[]> lines;
+    
     /**
      * Creates new form CameraPanel
      */
     public CameraPanel() {
+        lines = new ArrayList<>();
         initComponents();
         setBackground(Color.BLACK);
     }
@@ -50,8 +59,34 @@ public class CameraPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    void redraw(Map map) {
-        
+    @Override
+    protected void paintComponent(Graphics g) {
+	super.paintComponent(g);
+	Graphics2D g2d = (Graphics2D) g;
+
+	g2d.setColor(Color.BLUE);
+
+        lines.forEach((line) -> {
+            
+        });
+    }
+    
+    void redraw(Map map, double focal) {
+        Point p1, p2;
+        for (Polygon p: map.getWalls()) {
+            for (int i = 0; i < p.getVertices().size()-1; i++) {
+                p1 = p.getVertices().get(i);
+                p2 = p.getVertices().get(i+1);
+                if (!p1.isDrawable(focal) || !p2.isDrawable(focal)) continue;
+                lines.add(new Pixel[] {p1.toPixel(), p2.toPixel()});
+            }
+            
+            p1 = p.getVertices().get(p.getVertices().size()-1);
+            p2 = p.getVertices().get(0);
+            if (!p1.isDrawable(focal) || !p2.isDrawable(focal)) continue;
+            lines.add(new Pixel[] {p1.toPixel(), p2.toPixel()});
+        }
+        panel.repaint();
     }
 
 

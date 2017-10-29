@@ -6,9 +6,9 @@
 package wirtualnakamera.geology;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  *
@@ -26,15 +26,35 @@ public class Map {
      */
     public Map(FileInputStream in) {
         walls = new ArrayList<>();
+        points = new ArrayList<>();
         
-        reloadMap(in);
+        loadMap(in);
     }
     
+    private final void loadMap(FileInputStream in) {
+        //TODO: parsowanie; punkty dodawane i do 
+    }
     
-    public final void reloadMap(FileInputStream in) {
-        //TODO: parsowanie
+    public final void reloadMap() {
+        FileInputStream in;
+        try {
+            in = new FileInputStream("map.xml");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.exit(-1);
+            return;
+        }
+        
+        loadMap(in);
     }
 
+    public List<Polygon> getWalls() {
+        return walls;
+    }
+
+    public List<Point> getPoints() {
+        return points;
+    }
     
     public void transformByMatrix(double[][] d) {
         points.forEach((Point p) -> {

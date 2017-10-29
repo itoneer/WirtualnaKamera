@@ -5,6 +5,10 @@
  */
 package wirtualnakamera.geology;
 
+import wirtualnakamera.camera.Camera;
+import wirtualnakamera.camera.CameraPanel;
+import wirtualnakamera.camera.Pixel;
+
 /**
  *
  * @author itoneer
@@ -53,9 +57,7 @@ public class Point implements Comparable<Point> {
     
     
     public boolean isDrawable(double focal) {
-        //TODO: opisać
-        
-        return true;
+        return x > 0;
     }
     
     @Override
@@ -100,10 +102,25 @@ public class Point implements Comparable<Point> {
         xNew = d[0][0]*x + d[0][1]*y + d[0][2]*z + d[0][3];
         yNew = d[1][0]*x + d[1][1]*y + d[1][2]*z + d[1][3];
         zNew = d[2][0]*x + d[2][1]*y + d[2][2]*z + d[2][3];
-        if (d[3][0] + d[3][1] + d[3][2] + d[3][3] != 1) throw new IllegalArgumentException("Podano błędną macierz dla wsp. jednorodnych.");
+        double normal = d[3][0] + d[3][1] + d[3][2] + d[3][3];
     
-        x = xNew;
-        y = yNew;
-        z = zNew;
+        x = xNew / normal;
+        y = yNew / normal;
+        z = zNew / normal;
+    }
+    
+    public Pixel toPixel() {
+        double focal = Camera.getCamera().getFocal();
+        int panelHeight = CameraPanel.getPanel().getHeight();
+        int panelWidth = CameraPanel.getPanel().getWidth();
+        Pixel p = null;
+        int px, py;
+        
+        if (x <= 0) throw new IllegalStateException();
+        
+        px = (int) ((focal / x) * z  + panelWidth / 2) ;
+        py = (int) ((panelHeight / 2 - (focal / x) * y));
+        
+        return p;
     }
 }

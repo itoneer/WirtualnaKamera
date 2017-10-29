@@ -17,7 +17,7 @@ public class Camera {
     
     private double focal;
     private Map map;
-    private CameraPanel panel;
+    private final CameraPanel panel;
     
     private static final double TRANSL_STEP = 5.0;
     private static final double ROTAT_STEP = 5.0 * Math.PI/180.0;
@@ -26,7 +26,7 @@ public class Camera {
     
     
     /**
-     * Tworzy nową kamerę w początku układu współrżędnych zwróconą w kierunku rosnących wartości X.
+     * Tworzy nową kamerę w początku układu współrzędnych zwróconą w kierunku rosnących wartości X.
      */
     public Camera() {
         focal = 20;
@@ -47,7 +47,7 @@ public class Camera {
                                                {0.0, 1.0, 0.0, TRANSL_STEP},
                                                {0.0, 0.0, 1.0, 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -58,7 +58,7 @@ public class Camera {
                                                {0.0, 1.0, 0.0, -TRANSL_STEP},
                                                {0.0, 0.0, 1.0, 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -67,9 +67,9 @@ public class Camera {
     public void moveRight(){
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, 0.0}, 
                                                {0.0, 1.0, 0.0, 0.0},
-                                               {0.0, 0.0, 1.0, -TRANSL_STEP},
+                                               {0.0, 0.0, 1.0, TRANSL_STEP},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -78,9 +78,9 @@ public class Camera {
     public void moveLeft() {
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, 0.0}, 
                                                {0.0, 1.0, 0.0, 0.0},
-                                               {0.0, 0.0, 1.0, TRANSL_STEP},
+                                               {0.0, 0.0, 1.0, -TRANSL_STEP},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -91,7 +91,7 @@ public class Camera {
                                                {0.0, 1.0, 0.0, 0.0},
                                                {0.0, 0.0, 1.0, 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -102,7 +102,7 @@ public class Camera {
                                                {0.0, 1.0, 0.0, 0.0},
                                                {0.0, 0.0, 1.0, 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -113,7 +113,7 @@ public class Camera {
                                                {0.0, 1.0, 0.0, 0.0},
                                                {-Math.sin(ROTAT_STEP), 0.0, Math.cos(ROTAT_STEP), 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -124,7 +124,7 @@ public class Camera {
                                                {0.0, 1.0, 0.0, 0.0},
                                                {Math.sin(ROTAT_STEP), 0.0, -Math.cos(ROTAT_STEP), 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -135,7 +135,7 @@ public class Camera {
                                                {-Math.sin(ROTAT_STEP), -Math.cos(ROTAT_STEP), 0.0, 0.0},
                                                {0.0, 0.0, 1.0, 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -146,7 +146,7 @@ public class Camera {
                                                {Math.sin(ROTAT_STEP), Math.cos(ROTAT_STEP), 0.0, 0.0},
                                                {0.0, 0.0, 1.0, 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
  
@@ -159,7 +159,7 @@ public class Camera {
                                                {0.0, -Math.cos(ROTAT_STEP), Math.sin(ROTAT_STEP), 0.0},
                                                {0.0, -Math.sin(ROTAT_STEP), -Math.cos(ROTAT_STEP), 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
     
     /**
@@ -170,7 +170,7 @@ public class Camera {
                                                {0.0, Math.cos(ROTAT_STEP), -Math.sin(ROTAT_STEP), 0.0},
                                                {0.0, Math.sin(ROTAT_STEP), Math.cos(ROTAT_STEP), 0.0},
                                                {0.0, 0.0, 0.0, 1.0}});
-        panel.redraw(map);
+        panel.redraw(map, focal);
     }
 
     
@@ -178,21 +178,25 @@ public class Camera {
      * Zwiększa ogniskową kamery.
      */
     public void zoomIn() {
-        
-        
-        
-        
-        panel.redraw(map);
+        focal += ZOOM_STEP;
+        panel.redraw(map, focal);
     }
     
     /**
      * Zmniejsza ogniskową kamery.
      */
     public void zoomOut() {
-        
-        
-        
-        
-        panel.redraw(map);
+        focal -= ZOOM_STEP;
+        panel.redraw(map, focal);
+    }
+    
+    public void reset() {
+        focal = 20;
+        map.reloadMap();
+        panel.redraw(map, focal);
+    }
+
+    public double getFocal() {
+        return focal;
     }
 }
