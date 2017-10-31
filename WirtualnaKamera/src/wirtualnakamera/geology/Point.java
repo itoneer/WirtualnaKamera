@@ -113,7 +113,6 @@ public class Point implements Comparable<Point> {
         double focal = Camera.getCamera().getFocal();
         int panelHeight = CameraPanel.getPanel().getHeight();
         int panelWidth = CameraPanel.getPanel().getWidth();
-        Pixel p = null;
         int px, py;
         
         if (x <= 0) throw new IllegalStateException();
@@ -121,6 +120,6 @@ public class Point implements Comparable<Point> {
         px = (int) ((focal / x) * z  + panelWidth / 2) ;
         py = (int) ((panelHeight / 2 - (focal / x) * y));
         
-        return p;
+        return new Pixel(px, py);
     }
 }

@@ -5,10 +5,14 @@
  */
 package wirtualnakamera.geology;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 /**
  *
@@ -24,27 +28,55 @@ public class Map {
      * 
      * @param in plik zawierający definicję mapy.
      */
-    public Map(FileInputStream in) {
+    public Map(File in) {
         walls = new ArrayList<>();
         points = new ArrayList<>();
         
         loadMap(in);
     }
     
-    private final void loadMap(FileInputStream in) {
-        //TODO: parsowanie; punkty dodawane i do 
+    private void loadMap(File in) {
+        try {
+            SAXBuilder saxBuilder = new SAXBuilder();
+            Document document = saxBuilder.build(in);
+            Element mapElement = document.getRootElement();
+            List<Element> polygons = mapElement.getChildren();
+            Point p;
+            List<Point> pointList;
+            List<Element> vertices;
+            
+            for (Element poly: polygons) {
+                pointList = new ArrayList<>();
+                vertices = poly.getChildren();
+                for (Element vert: vertices) {
+                    p = new Point(Integer.parseInt(vert.getAttributeValue("x")),
+                                  Integer.parseInt(vert.getAttributeValue("y")),
+                                  Integer.parseInt(vert.getAttributeValue("z")));
+                    
+                    if (!pointList.contains(p)) {
+                        if (points.contains(p)) pointList.add(points.get(points.indexOf(p)));
+                        else pointList.add(new Point(Integer.parseInt(vert.getAttributeValue("x")),
+                                  Integer.parseInt(vert.getAttributeValue("y")),
+                                  Integer.parseInt(vert.getAttributeValue("z"))));
+                    }
+                }
+                
+                walls.add(new Polygon(pointList));
+                pointList.forEach((Point point) -> {
+                    if (!points.contains(point)) points.add(point);
+                });
+            }
+            
+        } catch (JDOMException | IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public final void reloadMap() {
-        FileInputStream in;
-        try {
-            in = new FileInputStream("map.xml");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.exit(-1);
-            return;
-        }
-        
+        walls = new ArrayList<>();
+        points = new ArrayList<>();
+        File in;
+        in = new File("map.xml");
         loadMap(in);
     }
 

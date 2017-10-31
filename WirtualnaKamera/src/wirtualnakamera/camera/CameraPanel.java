@@ -31,6 +31,7 @@ public class CameraPanel extends javax.swing.JPanel {
         lines = new ArrayList<>();
         initComponents();
         setBackground(Color.BLACK);
+        setFocusable(true);
     }
     
     public static CameraPanel getPanel() {
@@ -47,11 +48,18 @@ public class CameraPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        setMinimumSize(new java.awt.Dimension(600, 300));
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -59,19 +67,24 @@ public class CameraPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        
+    }//GEN-LAST:event_formKeyTyped
+
     @Override
     protected void paintComponent(Graphics g) {
 	super.paintComponent(g);
 	Graphics2D g2d = (Graphics2D) g;
 
-	g2d.setColor(Color.BLUE);
+	g2d.setColor(Color.CYAN);
 
         lines.forEach((line) -> {
-            
+           g2d.drawLine(line[0].getX(), line[0].getY(), line[1].getX(), line[1].getY());
         });
     }
     
-    void redraw(Map map, double focal) {
+    public void redraw(Map map, double focal) {
+        lines = new ArrayList<>();
         Point p1, p2;
         for (Polygon p: map.getWalls()) {
             for (int i = 0; i < p.getVertices().size()-1; i++) {
@@ -86,7 +99,6 @@ public class CameraPanel extends javax.swing.JPanel {
             if (!p1.isDrawable(focal) || !p2.isDrawable(focal)) continue;
             lines.add(new Pixel[] {p1.toPixel(), p2.toPixel()});
         }
-        panel.repaint();
     }
 
 

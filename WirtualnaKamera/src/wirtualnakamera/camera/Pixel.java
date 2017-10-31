@@ -10,8 +10,8 @@ package wirtualnakamera.camera;
  * @author itoneer
  */
 public class Pixel {
-    int x;
-    int y;
+    private int x;
+    private int y;
 
     public Pixel(int x, int y) {
         this.x = x;

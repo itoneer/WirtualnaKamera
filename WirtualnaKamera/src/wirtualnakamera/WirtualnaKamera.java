@@ -5,7 +5,14 @@
  */
 package wirtualnakamera;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 import wirtualnakamera.camera.Camera;
+import wirtualnakamera.camera.CameraPanel;
 
 /**
  *
@@ -19,8 +26,10 @@ public class WirtualnaKamera extends javax.swing.JFrame {
      * Creates new form WirtualnaKameraMain
      */
     public WirtualnaKamera() {
-        camera = Camera.getCamera();
         initComponents();
+        camera = Camera.getCamera();
+        cameraPanel1.redraw(camera.getMap(), camera.getFocal());
+        initKeybinds();
     }
 
     /**
@@ -32,29 +41,55 @@ public class WirtualnaKamera extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        cameraPanel1 = CameraPanel.getPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        resetItem = new javax.swing.JMenuItem();
+        closeItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Kamera Witrualna");
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+        javax.swing.GroupLayout cameraPanel1Layout = new javax.swing.GroupLayout(cameraPanel1);
+        cameraPanel1.setLayout(cameraPanel1Layout);
+        cameraPanel1Layout.setHorizontalGroup(
+            cameraPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 326, Short.MAX_VALUE)
+        cameraPanel1Layout.setVerticalGroup(
+            cameraPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 314, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("File");
+        jMenu1.setText("Plik");
+
+        resetItem.setText("Resetuj widok");
+        resetItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(resetItem);
+
+        closeItem.setText("Zamknij");
+        closeItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(closeItem);
+
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -62,16 +97,43 @@ public class WirtualnaKamera extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cameraPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cameraPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        
+    }//GEN-LAST:event_formKeyTyped
+
+    private void resetItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetItemActionPerformed
+        camera.reset();
+    }//GEN-LAST:event_resetItemActionPerformed
+
+    private void closeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeItemActionPerformed
+        dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_closeItemActionPerformed
+
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+        if (evt.getNewState() != JFrame.ICONIFIED) {
+            cameraPanel1.redraw(camera.getMap(), camera.getFocal());
+            cameraPanel1.repaint();
+        }
+    }//GEN-LAST:event_formWindowStateChanged
+   
+
+    
     /**
      * @param args the command line arguments
      */
@@ -107,9 +169,127 @@ public class WirtualnaKamera extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private wirtualnakamera.camera.CameraPanel cameraPanel1;
+    private javax.swing.JMenuItem closeItem;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem resetItem;
     // End of variables declaration//GEN-END:variables
+
+    private void initKeybinds() {
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("UP"), "moveUp");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("DOWN"), "moveDown");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("W"), "moveForward");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("S"), "moveBackward");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift UP"), "rotateForward");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift DOWN"), "rotateBackward");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift LEFT"), "rotateLeft");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift RIGHT"), "rotateRight");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift A"), "rollLeft");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift D"), "rollRight");
+        
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("O"), "zoomIn");
+        cameraPanel1.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("L"), "zoomOut");
+        
+        
+        cameraPanel1.getActionMap().put("moveUp", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.moveUp();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("moveDown", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.moveDown();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("moveLeft", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.moveLeft();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("moveRight", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.moveRight();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("moveForward", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.moveForward();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("moveBackward", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.moveBackward();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("rotateForward", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.rotateForward();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("rotateBackward", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.rotateBackward();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("rotateLeft", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.rotateLeft();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("rotateRight", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.rotateRight();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("rollLeft", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.rollLeft();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("rollRight", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.rollRight();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("zoomIn", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.zoomIn();
+            }  
+        });
+        
+        cameraPanel1.getActionMap().put("zoomOut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.zoomOut();
+            }  
+        });
+    }
 }

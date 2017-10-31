@@ -35,6 +35,8 @@ public class Polygon {
                 + "wczytywania wielokątów na płaszczyznach niebędących prostopadłymi"
                 + "do żadnej z osi układu współrzędnych.");
         }
+        
+        this.vertices = vertices;
     }
     
     public List<Point> getVertices() {
