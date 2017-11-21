@@ -2,42 +2,42 @@
 
 <map>
 	<!-- prostopadł. 1 -->
-	<polygon color="0000FF"> <!-- normalna: -Y-->
+	<polygon color="0000FF">
 		<point x="50" y="-40" z="15"/> 
 		<point x="80" y="-40" z="15"/>
 		<point x="80" y="-40" z="-15"/>
 		<point x="50" y="-40" z="-15"/>
 	</polygon>
 	
-	<polygon color="0000FF"> <!-- normalna: -X-->
+	<polygon color="0000FF">
 		<point x="50" y="-40" z="15"/>
 		<point x="50" y="-40" z="-15"/>
 		<point x="50" y="0" z="-15"/>
 		<point x="50" y="0" z="15"/>
 	</polygon>
 	
-	<polygon color="0000FF"> <!-- normalna: -Z-->
+	<polygon color="0000FF">
 		<point x="80" y="-40" z="-15"/>
 		<point x="50" y="-40" z="-15"/>
 		<point x="50" y="0" z="-15"/>
 		<point x="80" y="0" z="-15"/>
 	</polygon>
 	
-	<polygon color="0000FF"> <!-- normalna: +X--> 
+	<polygon color="0000FF">
 		<point x="80" y="-40" z="-15"/>
 		<point x="80" y="-40" z="15"/>
 		<point x="80" y="0" z="15"/>
 		<point x="80" y="0" z="-15"/>
 	</polygon>
 	
-	<polygon color="0000FF"> <!-- normalna: +Z-->
+	<polygon color="0000FF">
 		<point x="80" y="-40" z="15"/>
 		<point x="50" y="-40" z="15"/>
 		<point x="50" y="0" z="15"/>
 		<point x="80" y="0" z="15"/>
 	</polygon>
 	
-	<polygon color="0000FF"> <!-- normalna: +Y-->
+	<polygon color="0000FF">
 		<point x="50" y="0" z="-15"/>
 		<point x="80" y="0" z="-15"/>
 		<point x="80" y="0" z="15"/>
@@ -46,42 +46,42 @@
 	
 	
 	<!-- prostopadł. 2 -->
-	<polygon> <!-- normalna: -->
+	<polygon color="00FF00">
 		<point x="100" y="-40" z="15"/>
 		<point x="150" y="-40" z="15"/>
 		<point x="150" y="-40" z="-30"/>
 		<point x="100" y="-40" z="-30"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="00FF00">
 		<point x="100" y="-40" z="15"/>
 		<point x="150" y="-40" z="15"/>
 		<point x="150" y="-10" z="15"/>
 		<point x="100" y="-10" z="15"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="00FF00">
 		<point x="150" y="-40" z="15"/>
 		<point x="150" y="-40" z="-30"/>
 		<point x="150" y="-10" z="-30"/>
 		<point x="150" y="-10" z="15"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="00FF00">
 		<point x="150" y="-40" z="-30"/>
 		<point x="100" y="-40" z="-30"/>
 		<point x="100" y="-10" z="-30"/>
 		<point x="150" y="-10" z="-30"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="00FF00">
 		<point x="100" y="-40" z="-30"/>
 		<point x="100" y="-40" z="15"/>
 		<point x="100" y="-10" z="15"/>
 		<point x="100" y="-10" z="-30"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="00FF00">
 		<point x="100" y="-10" z="15"/>
 		<point x="150" y="-10" z="15"/>
 		<point x="150" y="-10" z="-30"/>
@@ -90,42 +90,42 @@
 	
 	
 	<!-- prostopadł. 3 -->
-	<polygon> <!-- normalna: -->
+	<polygon color="FF0000">
 		<point x="45" y="-40" z="90"/>
 		<point x="45" y="-40" z="140"/>
 		<point x="70" y="-40" z="140"/>
 		<point x="70" y="-40" z="90"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="FF0000">
 		<point x="45" y="-40" z="90"/>
 		<point x="45" y="-40" z="140"/>
 		<point x="45" y="30" z="140"/>
 		<point x="45" y="30" z="90"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="FF0000">
 		<point x="45" y="-40" z="140"/>
 		<point x="70" y="-40" z="140"/>
 		<point x="70" y="30" z="140"/>
 		<point x="45" y="30" z="140"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="FF0000">
 		<point x="70" y="-40" z="140"/>
 		<point x="70" y="-40" z="90"/>
 		<point x="70" y="30" z="90"/>
 		<point x="70" y="30" z="140"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="FF0000">
 		<point x="70" y="-40" z="90"/>
 		<point x="45" y="-40" z="90"/>
 		<point x="45" y="30" z="90"/>
 		<point x="70" y="30" z="90"/>
 	</polygon>
 	
-	<polygon> <!-- normalna: -->
+	<polygon color="FF0000">
 		<point x="45" y="30" z="90"/>
 		<point x="45" y="30" z="140"/>
 		<point x="70" y="30" z="140"/>
@@ -133,7 +133,7 @@
 	</polygon>
 	
 	<!-- chodnik -->
-	<polygon color="BBBBBB"> <!-- normalna: -->
+	<polygon color="BBBBBB">
 		<point x="40" y="-40" z="80"/>
 		<point x="40" y="-40" z="20"/>
 		<point x="240" y="-40" z="20"/>
