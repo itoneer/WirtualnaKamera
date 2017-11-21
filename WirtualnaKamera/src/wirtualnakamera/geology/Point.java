@@ -5,15 +5,24 @@
  */
 package wirtualnakamera.geology;
 
+
 import wirtualnakamera.camera.Camera;
 import wirtualnakamera.camera.CameraPanel;
-import wirtualnakamera.camera.Pixel;
 
 /**
  *
  * @author itoneer
  */
 public class Point implements Comparable<Point> {
+
+    static Point getMidPoint(Point p1, Point p2) {
+        double midX = (p2.x - p1.x)/2 + p1.x;
+        double midY = (p2.y - p1.y)/2 + p1.y;
+        double midZ = (p2.z - p1.z)/2 + p1.z;
+        
+        return new Point(midX, midY, midZ);
+    }
+    
     private double x;
     private double y;
     private double z;
@@ -109,7 +118,7 @@ public class Point implements Comparable<Point> {
         z = zNew / normal;
     }
     
-    public Pixel toPixel() {
+    public java.awt.Point toPoint2D() {
         double focal = Camera.getCamera().getFocal();
         int panelHeight = CameraPanel.getPanel().getHeight();
         int panelWidth = CameraPanel.getPanel().getWidth();
@@ -120,6 +129,6 @@ public class Point implements Comparable<Point> {
         px = (int) ((focal / x) * z  + panelWidth / 2) ;
         py = (int) ((panelHeight / 2 - (focal / x) * y));
         
-        return new Pixel(px, py);
+        return new java.awt.Point(px, py);
     }
 }

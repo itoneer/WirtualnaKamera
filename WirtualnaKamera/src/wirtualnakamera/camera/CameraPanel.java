@@ -8,11 +8,10 @@ package wirtualnakamera.camera;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import wirtualnakamera.geology.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 import wirtualnakamera.geology.Map;
-import wirtualnakamera.geology.Point;
-import wirtualnakamera.geology.Polygon;
 
 /**
  *
@@ -22,13 +21,15 @@ public class CameraPanel extends javax.swing.JPanel {
 
     private static CameraPanel panel = null;
     
-    private List<Pixel[]> lines;
+    private List<java.awt.Point[]> lines;
+    private List<Polygon> polys;
     
     /**
      * Creates new form CameraPanel
      */
     public CameraPanel() {
         lines = new ArrayList<>();
+        polys = new ArrayList();
         initComponents();
         setBackground(Color.BLACK);
         setFocusable(true);
@@ -76,29 +77,65 @@ public class CameraPanel extends javax.swing.JPanel {
 	super.paintComponent(g);
 	Graphics2D g2d = (Graphics2D) g;
 
-	g2d.setColor(Color.CYAN);
-
+	/*g2d.setColor(Color.CYAN);
+        
         lines.forEach((line) -> {
-           g2d.drawLine(line[0].getX(), line[0].getY(), line[1].getX(), line[1].getY());
+           g2d.drawLine((int) line[0].getX(), (int) line[0].getY(), (int) line[1].getX(), (int) line[1].getY());
+        });*/
+        
+        polys.forEach((poly) -> {
+            g2d.setColor(poly.getColor());
+            g2d.fillPolygon(poly.toAwt());
         });
     }
     
-    public void redraw(Map map, double focal) {
+    /*public void redraw(Map map, double focal) {
         lines = new ArrayList<>();
-        Point p1, p2;
+        wirtualnakamera.geology.Point p1, p2;
         for (Polygon p: map.getWalls()) {
+            if (!p.isDrawable(focal)) continue;
             for (int i = 0; i < p.getVertices().size()-1; i++) {
                 p1 = p.getVertices().get(i);
                 p2 = p.getVertices().get(i+1);
                 if (!p1.isDrawable(focal) || !p2.isDrawable(focal)) continue;
-                lines.add(new Pixel[] {p1.toPixel(), p2.toPixel()});
+                lines.add(new java.awt.Point[] {p1.toPoint2D(), p2.toPoint2D()});
             }
             
             p1 = p.getVertices().get(p.getVertices().size()-1);
             p2 = p.getVertices().get(0);
             if (!p1.isDrawable(focal) || !p2.isDrawable(focal)) continue;
-            lines.add(new Pixel[] {p1.toPixel(), p2.toPixel()});
+            lines.add(new java.awt.Point[] {p1.toPoint2D(), p2.toPoint2D()});
         }
+    }*/
+    
+    public void redraw(Map map, double focal) {
+        List<Polygon> toDraw = new ArrayList(map.getWalls());
+        
+        List<Polygon> td2 = new ArrayList(toDraw);
+        
+        for (Polygon p: toDraw) {
+            if (!p.isDrawable(focal)) td2.remove(p);
+        }
+        
+        toDraw = td2;
+        td2 = new ArrayList();
+        
+        for (Polygon p: toDraw) {
+            List<Polygon> decompo = p.breakdown();
+            td2.addAll(decompo);
+        }
+        
+        toDraw = td2;
+                        
+        toDraw.sort((Polygon o1, wirtualnakamera.geology.Polygon o2) -> {
+            wirtualnakamera.geology.Point c1 = o1.getCentroid();
+            wirtualnakamera.geology.Point c2 = o2.getCentroid();
+            double len1 = Math.sqrt(c1.getX()*c1.getX() + c1.getY()*c1.getY() + c1.getZ()*c1.getZ());
+            double len2 = Math.sqrt(c2.getX()*c2.getX() + c2.getY()*c2.getY() + c2.getZ()*c2.getZ());
+            return -1* Double.compare(len1, len2);
+        });
+        
+        polys = toDraw;
     }
 
 

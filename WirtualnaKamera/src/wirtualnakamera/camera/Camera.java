@@ -28,7 +28,7 @@ public class Camera {
      * Tworzy nową kamerę w początku układu współrzędnych zwróconą w kierunku rosnących wartości X.
      */
     private Camera() {
-        focal = 200;
+        focal = 400;
         panel = CameraPanel.getPanel();
         map = new Map(new File("map.xml"));
     }

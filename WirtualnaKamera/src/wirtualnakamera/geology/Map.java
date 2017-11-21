@@ -5,6 +5,7 @@
  */
 package wirtualnakamera.geology;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class Map {
             Point p;
             List<Point> pointList;
             List<Element> vertices;
+            Color color;
             
             for (Element poly: polygons) {
                 pointList = new ArrayList<>();
@@ -61,7 +63,13 @@ public class Map {
                     }
                 }
                 
-                walls.add(new Polygon(pointList));
+                color = (poly.getAttributeValue("color") == null) ? Color.MAGENTA : new Color(
+                        Integer.valueOf(poly.getAttributeValue("color").substring(0, 2), 16),
+                        Integer.valueOf(poly.getAttributeValue("color").substring(2, 4), 16),
+                        Integer.valueOf(poly.getAttributeValue("color").substring(4, 6), 16));
+                
+                
+                walls.add(new Polygon(pointList, color));
                 pointList.forEach((Point point) -> {
                     if (!points.contains(point)) points.add(point);
                 });
