@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <map>
-	<!-- prostopadł. 1 -->
+<!--
 	<polygon color="0000FF">
 		<point x="50" y="-40" z="15"/> 
 		<point x="80" y="-40" z="15"/>
@@ -45,7 +45,7 @@
 	</polygon>
 	
 	
-	<!-- prostopadł. 2 -->
+
 	<polygon color="00FF00">
 		<point x="100" y="-40" z="15"/>
 		<point x="150" y="-40" z="15"/>
@@ -89,7 +89,7 @@
 	</polygon>
 	
 	
-	<!-- prostopadł. 3 -->
+        
 	<polygon color="FF0000">
 		<point x="45" y="-40" z="90"/>
 		<point x="45" y="-40" z="140"/>
@@ -131,12 +131,17 @@
 		<point x="70" y="30" z="140"/>
 		<point x="70" y="30" z="90"/>
 	</polygon>
-	
-	<!-- chodnik -->
+        
+        
+        
 	<polygon color="BBBBBB">
 		<point x="40" y="-40" z="80"/>
 		<point x="40" y="-40" z="20"/>
 		<point x="240" y="-40" z="20"/>
 		<point x="240" y="-40" z="80"/>
-	</polygon>	
+	</polygon>
+        -->
+        
+        <sphere radius="5" latLines="8" longLines="14" x="400" y="10" z="15" color="BBBBBB"/>         
+                        	
 </map>

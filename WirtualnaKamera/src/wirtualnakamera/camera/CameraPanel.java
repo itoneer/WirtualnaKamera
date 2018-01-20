@@ -12,6 +12,7 @@ import wirtualnakamera.geology.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 import wirtualnakamera.geology.Map;
+import wirtualnakamera.geology.Point;
 
 /**
  *
@@ -23,6 +24,8 @@ public class CameraPanel extends javax.swing.JPanel {
     
     private List<java.awt.Point[]> lines;
     private List<Polygon> polys;
+    private List<Point> lightSources;
+    private PhongRenderer renderer;
     
     /**
      * Creates new form CameraPanel
@@ -33,6 +36,8 @@ public class CameraPanel extends javax.swing.JPanel {
         initComponents();
         setBackground(Color.BLACK);
         setFocusable(true);
+        lightSources = null;
+        renderer = new PhongRenderer();
     }
     
     public static CameraPanel getPanel() {
@@ -83,10 +88,14 @@ public class CameraPanel extends javax.swing.JPanel {
            g2d.drawLine((int) line[0].getX(), (int) line[0].getY(), (int) line[1].getX(), (int) line[1].getY());
         });*/
         
-        polys.forEach((poly) -> {
+        /*polys.forEach((poly) -> {
             g2d.setColor(poly.getColor());
             g2d.fillPolygon(poly.toAwt());
-        });
+            
+        });*/
+        
+        renderer.render(polys, g2d, lightSources);
+        
     }
     
     /*public void redraw(Map map, double focal) {
@@ -109,6 +118,7 @@ public class CameraPanel extends javax.swing.JPanel {
     }*/
     
     public void redraw(Map map, double focal) {
+        if (lightSources == null) lightSources = map.getLightSources();
         List<Polygon> toDraw = new ArrayList(map.getWalls());
         
         List<Polygon> td2 = new ArrayList(toDraw);
@@ -121,7 +131,7 @@ public class CameraPanel extends javax.swing.JPanel {
         td2 = new ArrayList();
         
         for (Polygon p: toDraw) {
-            List<Polygon> decompo = p.breakdown();
+            List<Polygon> decompo = p.divide(); //p.breakdown();
             td2.addAll(decompo);
         }
         

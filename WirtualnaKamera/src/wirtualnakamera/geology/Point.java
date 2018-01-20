@@ -26,11 +26,26 @@ public class Point implements Comparable<Point> {
     private double x;
     private double y;
     private double z;
+    private double[] normalVec;
 
     public Point(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+        normalVec = null;
+    }
+    
+    public Point(double x, double y, double z, Point ref) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        
+        normalVec = new double[3];
+        normalVec[0] = this.x - ref.x;
+        normalVec[1] = this.y - ref.y;
+        normalVec[2] = this.z - ref.z;
+        
+        normalizeVector();
     }
     
     public char compareDims(Point p1, Point p2) {
@@ -105,7 +120,7 @@ public class Point implements Comparable<Point> {
         return -1;
     }
 
-    void transformByMatrix(double[][] d) {
+    void transformByMatrix(double[][] d, boolean isRotation, Point center) {
         double xNew, yNew, zNew;
         
         xNew = d[0][0]*x + d[0][1]*y + d[0][2]*z + d[0][3];
@@ -116,6 +131,10 @@ public class Point implements Comparable<Point> {
         x = xNew / normal;
         y = yNew / normal;
         z = zNew / normal;
+        
+        if (isRotation) {
+            recomputeVector(center);
+        }
     }
     
     public java.awt.Point toPoint2D() {
@@ -130,5 +149,22 @@ public class Point implements Comparable<Point> {
         py = (int) ((panelHeight / 2 - (focal / x) * y));
         
         return new java.awt.Point(px, py);
+    }
+    
+    private void normalizeVector() {
+        double normalLen = Math.sqrt(normalVec[0]*normalVec[0] + normalVec[1]*normalVec[1] + normalVec[2]*normalVec[2]);
+        
+        normalVec[0] /= normalLen;
+        normalVec[1] /= normalLen;
+        normalVec[2] /= normalLen;
+    }
+    
+    private void recomputeVector(Point c) {
+        normalVec = new double[3];
+        normalVec[0] = this.x - c.x;
+        normalVec[1] = this.y - c.y;
+        normalVec[2] = this.z - c.z;
+        
+        normalizeVector();
     }
 }

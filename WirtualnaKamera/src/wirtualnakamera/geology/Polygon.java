@@ -68,7 +68,7 @@ public class Polygon {
         return color;
     }
     
-    private double[] getNormalVector() {
+    public Vector3D getNormalVector() {
         double [] normal = new double[3];
         double [] a = getVector(vertices.get(0), vertices.get(1));
         double [] b = getVector(vertices.get(1), vertices.get(2));
@@ -77,15 +77,15 @@ public class Polygon {
         normal[1] = - a[2]*b[0] + a[0]*b[2];
         normal[2] = - a[0]*b[1] + a[1]*b[0];
         
-        return normal;
+        return new Vector3D(normal);
     }
     
     public boolean isDrawable(double focal) {
-        /*if (getNormalVector()[0] > 0.0001 ) return false;
-        else*/ if (!vertices.stream().noneMatch((p) -> (!p.isDrawable(focal)))) {
-            return false;
-        }
-        return true;
+        Point c = getCentroid();
+        Vector3D fromObserver = new Vector3D(new Point(0,0,0), c);
+        
+        return !(getNormalVector().dotProduct(fromObserver) >=0 ||
+                !vertices.stream().noneMatch((p) -> (!p.isDrawable(focal))));
     }
 
     private double[] getVector(Point p1, Point p2) {
@@ -99,12 +99,21 @@ public class Polygon {
     }
     
     public Point getCentroid() {
-        if (vertices.size() != 3) throw new IllegalStateException("Znajdowanie środka ciężkośći jest dostępne tylko dla trójkątów.");
+        if (vertices.size() > 4) throw new IllegalStateException("Znajdowanie środka ciężkośći jest dostępne tylko dla trójkątów i czworokątów.");
         
-        double centrX = (getPointX(0) + getPointX(1) + getPointX(2))/3;
-        double centrY = (getPointY(0) + getPointY(1) + getPointY(2))/3;
-        double centrZ = (getPointY(0) + getPointY(1) + getPointY(2))/3;
+        double centrX, centrY, centrZ;
         
+        if (vertices.size() == 3) {
+            centrX = (getPointX(0) + getPointX(1) + getPointX(2))/3;
+            centrY = (getPointY(0) + getPointY(1) + getPointY(2))/3;
+            centrZ = (getPointZ(0) + getPointZ(1) + getPointZ(2))/3;
+        }
+        
+        else {
+            centrX = (getPointX(0) + getPointX(1) + getPointX(2) + getPointX(3))/4;
+            centrY = (getPointY(0) + getPointY(1) + getPointY(2) + getPointY(3))/4;
+            centrZ = (getPointZ(0) + getPointZ(1) + getPointZ(2) + getPointZ(3))/4;
+        }
         return (centroid = new Point(centrX, centrY, centrZ));
     }
 
@@ -122,6 +131,18 @@ public class Polygon {
             return result;
         }
     }
+    
+    public List<Polygon> divide() {
+        List<Polygon> pieces = new ArrayList();
+            for (int i = 2; i < vertices.size(); i++) {
+                pieces.add(new Polygon(color, vertices.get(0), vertices.get(i-1), vertices.get(i)));
+            }
+            List<Polygon> result = new ArrayList();
+            pieces.forEach((p) -> {
+                result.addAll(p.breakdownTriangle(0));
+            });
+            return result;
+    }
 
     private List<Polygon> breakdownTriangle(int i) {
         if (vertices.size() > 3) throw new IllegalStateException("Ta metoda działa tylko dla trójkątów.");
@@ -137,14 +158,7 @@ public class Polygon {
         pieces.add(new Polygon(color, vertices.get(2), mid3, mid2));
         pieces.add(new Polygon(color, mid3, mid1, mid2));
         
-        if (i == 4) return pieces;
-        else {
-            List<Polygon> result = new ArrayList();
-            pieces.forEach((p) -> {
-                result.addAll(p.breakdownTriangle(i+1));
-            });
-            return result;
-        }
+        return pieces;
     }
     
     public java.awt.Polygon toAwt() {

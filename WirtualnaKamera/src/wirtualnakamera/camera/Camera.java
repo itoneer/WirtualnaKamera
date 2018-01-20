@@ -19,6 +19,7 @@ public class Camera {
     private double focal;
     private Map map;
     private final CameraPanel panel;
+    private final PhongRenderer renderer;
     
     private static final double TRANSL_STEP = 5.0;
     private static final double ROTAT_STEP = 5.0 * Math.PI/180.0;
@@ -28,9 +29,10 @@ public class Camera {
      * Tworzy nową kamerę w początku układu współrzędnych zwróconą w kierunku rosnących wartości X.
      */
     private Camera() {
-        focal = 400;
+        focal = 900;
         panel = CameraPanel.getPanel();
         map = new Map(new File("map.xml"));
+        renderer = new PhongRenderer();
     }
     
     public static final Camera getCamera() {
@@ -50,7 +52,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, 0.0}, 
                                                {0.0, 1.0, 0.0, TRANSL_STEP},
                                                {0.0, 0.0, 1.0, 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, false);
         panel.redraw(map, focal);
         panel.repaint();
     }
@@ -62,7 +64,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, 0.0}, 
                                                {0.0, 1.0, 0.0, -TRANSL_STEP},
                                                {0.0, 0.0, 1.0, 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, false);
         panel.redraw(map, focal);
         panel.repaint();
     }
@@ -74,7 +76,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, 0.0}, 
                                                {0.0, 1.0, 0.0, 0.0},
                                                {0.0, 0.0, 1.0, TRANSL_STEP},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, false);
         panel.redraw(map, focal);
         panel.repaint();
     }
@@ -86,7 +88,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, 0.0}, 
                                                {0.0, 1.0, 0.0, 0.0},
                                                {0.0, 0.0, 1.0, -TRANSL_STEP},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, false);
         panel.redraw(map, focal);
         panel.repaint();
     }
@@ -98,7 +100,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, TRANSL_STEP}, 
                                                {0.0, 1.0, 0.0, 0.0},
                                                {0.0, 0.0, 1.0, 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, false);
         panel.redraw(map, focal);
         panel.repaint();
         
@@ -111,10 +113,11 @@ public class Camera {
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, -TRANSL_STEP}, 
                                                {0.0, 1.0, 0.0, 0.0},
                                                {0.0, 0.0, 1.0, 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, false);
         panel.redraw(map, focal);
         panel.repaint();
     }
+    
     
     /**
      * Obraca kamerę w prawo.
@@ -123,7 +126,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{Math.cos(ROTAT_STEP), 0.0, Math.sin(ROTAT_STEP), 0.0}, 
                                                {0.0, 1.0, 0.0, 0.0},
                                                {-Math.sin(ROTAT_STEP), 0.0, Math.cos(ROTAT_STEP), 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, true);
         panel.redraw(map, focal);
         panel.repaint();
     }
@@ -135,7 +138,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{Math.cos(-ROTAT_STEP), 0.0, Math.sin(-ROTAT_STEP), 0.0}, 
                                                {0.0, 1.0, 0.0, 0.0},
                                                {-Math.sin(-ROTAT_STEP), 0.0, Math.cos(-ROTAT_STEP), 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, true);
         panel.redraw(map, focal);
         panel.repaint();
     }
@@ -147,7 +150,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{Math.cos(-ROTAT_STEP), -Math.sin(-ROTAT_STEP), 0.0, 0.0}, 
                                                {Math.sin(-ROTAT_STEP), Math.cos(-ROTAT_STEP), 0.0, 0.0},
                                                {0.0, 0.0, 1.0, 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, true);
         panel.redraw(map, focal);
         panel.repaint();
     }
@@ -159,12 +162,10 @@ public class Camera {
         map.transformByMatrix( new double[][] {{Math.cos(ROTAT_STEP), -Math.sin(ROTAT_STEP), 0.0, 0.0}, 
                                                {Math.sin(ROTAT_STEP), Math.cos(ROTAT_STEP), 0.0, 0.0},
                                                {0.0, 0.0, 1.0, 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, true);
         panel.redraw(map, focal);
         panel.repaint();
     }
-    
- 
     
     /**
      * Obraca kamerę w prawo względem osi prostopadłej do rzutni.
@@ -173,7 +174,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, 0.0}, 
                                                {0.0, Math.cos(-ROTAT_STEP), -Math.sin(-ROTAT_STEP), 0.0},
                                                {0.0, Math.sin(-ROTAT_STEP), Math.cos(-ROTAT_STEP), 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, true);
         panel.redraw(map, focal);
         panel.repaint();
     }
@@ -185,7 +186,7 @@ public class Camera {
         map.transformByMatrix( new double[][] {{1.0, 0.0, 0.0, 0.0}, 
                                                {0.0, Math.cos(ROTAT_STEP), -Math.sin(ROTAT_STEP), 0.0},
                                                {0.0, Math.sin(ROTAT_STEP), Math.cos(ROTAT_STEP), 0.0},
-                                               {0.0, 0.0, 0.0, 1.0}});
+                                               {0.0, 0.0, 0.0, 1.0}}, true);
         panel.redraw(map, focal);
         panel.repaint();
     }
@@ -209,6 +210,9 @@ public class Camera {
         panel.repaint();
     }
     
+    /**
+     *  Przywraca początkowe ustawienia kamery.
+     */
     public void reset() {
         focal = 200;
         map.reloadMap();
